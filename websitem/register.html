@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kayıt Ol - Web Tasarım</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+    <script defer src="scripts.js"></script>
+</head>
+<body>
+    <header>
+        <div class="navbar">
+            <a href="index.html" class="logo">Web Tasarım</a>
+            <nav>
+                <ul>
+                    <li><a href="index.html">Anasayfa</a></li>
+                    <li><a href="services.html">Hizmetler</a></li>
+                    <li><a href="about.html">Hakkımızda</a></li>
+                    <li><a href="contact.html">İletişim</a></li>
+                    <li><a href="login.html">Giriş Yap</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <main>
+        <form id="registerForm">
+            <h2>Hesap Oluştur</h2>
+            <label for="newUsername">Kullanıcı Adı:</label>
+            <input type="text" id="newUsername" name="newUsername" placeholder="Kullanıcı adınızı girin" required>
+            
+            <label for="newPassword">Şifre:</label>
+            <input type="password" id="newPassword" name="newPassword" placeholder="Şifrenizi oluşturun" required>
+            
+            <label for="confirmPassword">Şifreyi Onayla:</label>
+            <input type="password" id="confirmPassword" name="confirmPassword" placeholder="Şifrenizi tekrar girin" required>
+            
+            <button type="submit">Kayıt Ol</button>
+        </form>
+        <p>Zaten bir hesabınız var mı? <a href="login.html">Giriş Yap</a></p>
+    </main>
+
+    <footer>
+        <p>© 2024 Web Tasarım. Tüm Hakları Saklıdır.</p>
+    </footer>
+</body>
+</html>
