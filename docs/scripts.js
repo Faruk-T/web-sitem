@@ -84,6 +84,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   if (form && status) {
     const CONTACT_EMAIL = "faruktazeoglu9@gmail.com";
+    const FORMSUBMIT_ID = "7ed587bedf0bcc3b7c4d2cad17418e37";
     const isHosted =
       location.protocol === "http:" || location.protocol === "https:";
 
@@ -112,7 +113,7 @@ document.addEventListener("DOMContentLoaded", () => {
       if (isHosted) {
         try {
           const response = await fetch(
-            `https://formsubmit.co/ajax/${CONTACT_EMAIL}`,
+            `https://formsubmit.co/ajax/${FORMSUBMIT_ID}`,
             {
               method: "POST",
               headers: {
