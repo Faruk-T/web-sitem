@@ -5,6 +5,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const year = document.querySelector("[data-year]");
   const form = document.getElementById("contactForm");
   const status = document.querySelector("[data-form-status]");
+  const emailCopy = document.querySelector("[data-email-copy]");
   const reveals = document.querySelectorAll("[data-reveal]");
 
   if (year) {
@@ -59,32 +60,31 @@ document.addEventListener("DOMContentLoaded", () => {
     reveals.forEach((el) => el.classList.add("is-in"));
   }
 
-  // Hero items should appear immediately on load
   document.querySelectorAll(".hero [data-reveal]").forEach((el) => {
     requestAnimationFrame(() => el.classList.add("is-in"));
   });
 
-  if (form && status) {
-    form.addEventListener("submit", (event) => {
-      event.preventDefault();
-      const data = new FormData(form);
-      const name = String(data.get("name") || "").trim();
-      const email = String(data.get("email") || "").trim();
-      const message = String(data.get("message") || "").trim();
-
-      if (!name || !email || !message) {
-        status.textContent = "Lütfen tüm alanları doldurun.";
-        return;
+  if (emailCopy) {
+    const label = emailCopy.textContent;
+    emailCopy.addEventListener("click", async () => {
+      const address = emailCopy.getAttribute("data-email") || label;
+      try {
+        await navigator.clipboard.writeText(address);
+        emailCopy.textContent = "Kopyalandı";
+        emailCopy.classList.add("is-copied");
+        window.setTimeout(() => {
+          emailCopy.textContent = label;
+          emailCopy.classList.remove("is-copied");
+        }, 1600);
+      } catch {
+        emailCopy.textContent = address;
       }
+    });
+  }
 
-      const subject = encodeURIComponent(`Portföy iletişimi — ${name}`);
-      const body = encodeURIComponent(
-        `Ad: ${name}\nE-posta: ${email}\n\n${message}`
-      );
-
-      status.textContent = "E-posta istemciniz açılıyor…";
-      window.location.href = `mailto:faruktazeoglu9@gmail.com?subject=${subject}&body=${body}`;
-      form.reset();
+  if (form && status) {
+    form.addEventListener("submit", () => {
+      status.textContent = "Gönderiliyor…";
     });
   }
 });

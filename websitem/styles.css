@@ -638,16 +638,45 @@ a:hover {
   font-size: 0.95rem;
 }
 
-.contact-alt a {
+.contact-alt a,
+.email-copy {
   color: var(--ink);
   font-weight: 600;
   text-decoration: none;
   border-bottom: 1px solid var(--line);
 }
 
-.contact-alt a:hover {
+.email-copy {
+  display: inline;
+  padding: 0;
+  margin: 0;
+  background: none;
+  border-top: 0;
+  border-left: 0;
+  border-right: 0;
+  border-radius: 0;
+  font: inherit;
+  cursor: pointer;
+}
+
+.contact-alt a:hover,
+.email-copy:hover {
   border-bottom-color: var(--accent);
   color: var(--accent-deep);
+}
+
+.email-copy.is-copied {
+  color: var(--accent-deep);
+  border-bottom-color: var(--accent);
+}
+
+.honey {
+  position: absolute;
+  left: -9999px;
+  width: 1px;
+  height: 1px;
+  opacity: 0;
+  pointer-events: none;
 }
 
 /* Footer */

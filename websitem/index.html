@@ -211,7 +211,11 @@
           <h2>Birlikte çalışalım</h2>
           <p>Yeni bir ürün, mimari danışmanlık veya mevcut sistemi sertleştirmek için yazın.</p>
         </header>
-        <form class="contact-form" id="contactForm" novalidate>
+        <form class="contact-form" id="contactForm" action="https://formsubmit.co/faruktazeoglu9@gmail.com" method="POST">
+          <input type="hidden" name="_subject" value="Portföy sitesinden yeni mesaj">
+          <input type="hidden" name="_captcha" value="false">
+          <input type="hidden" name="_template" value="table">
+          <input type="text" name="_honey" class="honey" tabindex="-1" autocomplete="off" aria-hidden="true">
           <div class="field">
             <label for="name">Ad</label>
             <input id="name" name="name" type="text" autocomplete="name" required placeholder="Adınız">
@@ -231,7 +235,9 @@
         </form>
         <p class="contact-alt">
           Doğrudan:
-          <a href="mailto:faruktazeoglu9@gmail.com">faruktazeoglu9@gmail.com</a>
+          <button type="button" class="email-copy" data-email-copy data-email="faruktazeoglu9@gmail.com" aria-label="E-postayı kopyala">
+            faruktazeoglu9@gmail.com
+          </button>
           ·
           <a href="https://github.com/Faruk-T" target="_blank" rel="noopener noreferrer">github.com/Faruk-T</a>
         </p>
