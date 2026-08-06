@@ -1,40 +1,90 @@
 document.addEventListener("DOMContentLoaded", () => {
-    // Kullanıcı Kaydı
-    const registerForm = document.getElementById("registerForm");
-    if (registerForm) {
-        registerForm.addEventListener("submit", (e) => {
-            e.preventDefault();
-            const newUsername = document.getElementById("newUsername").value;
-            const newPassword = document.getElementById("newPassword").value;
-            const confirmPassword = document.getElementById("confirmPassword").value;
+  const header = document.querySelector("[data-header]");
+  const nav = document.querySelector("[data-nav]");
+  const toggle = document.querySelector("[data-nav-toggle]");
+  const year = document.querySelector("[data-year]");
+  const form = document.getElementById("contactForm");
+  const status = document.querySelector("[data-form-status]");
+  const reveals = document.querySelectorAll("[data-reveal]");
 
-            if (newPassword !== confirmPassword) {
-                alert("Şifreler eşleşmiyor!");
-                return;
-            }
+  if (year) {
+    year.textContent = String(new Date().getFullYear());
+  }
 
-            // Kullanıcı bilgilerini localStorage'a kaydet
-            localStorage.setItem(newUsername, newPassword);
-            alert("Kayıt başarılı! Giriş yapabilirsiniz.");
-            window.location.href = "login.html";
+  const setHeaderState = () => {
+    if (!header) return;
+    const scrolled = window.scrollY > 24;
+    const onHero = window.scrollY < window.innerHeight * 0.72;
+    header.classList.toggle("is-scrolled", scrolled);
+    header.classList.toggle("is-hero", onHero);
+  };
+
+  setHeaderState();
+  window.addEventListener("scroll", setHeaderState, { passive: true });
+  window.addEventListener("resize", setHeaderState);
+
+  if (toggle && nav) {
+    toggle.addEventListener("click", () => {
+      const open = toggle.getAttribute("aria-expanded") === "true";
+      toggle.setAttribute("aria-expanded", String(!open));
+      nav.classList.toggle("is-open", !open);
+    });
+
+    nav.querySelectorAll("a").forEach((link) => {
+      link.addEventListener("click", () => {
+        toggle.setAttribute("aria-expanded", "false");
+        nav.classList.remove("is-open");
+      });
+    });
+  }
+
+  reveals.forEach((el, i) => {
+    el.style.setProperty("--reveal-i", String(i % 6));
+  });
+
+  if ("IntersectionObserver" in window) {
+    const io = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add("is-in");
+            io.unobserve(entry.target);
+          }
         });
-    }
+      },
+      { threshold: 0.16, rootMargin: "0px 0px -8% 0px" }
+    );
+    reveals.forEach((el) => io.observe(el));
+  } else {
+    reveals.forEach((el) => el.classList.add("is-in"));
+  }
 
-    // Kullanıcı Girişi
-    const loginForm = document.getElementById("loginForm");
-    if (loginForm) {
-        loginForm.addEventListener("submit", (e) => {
-            e.preventDefault();
-            const username = document.getElementById("username").value;
-            const password = document.getElementById("password").value;
+  // Hero items should appear immediately on load
+  document.querySelectorAll(".hero [data-reveal]").forEach((el) => {
+    requestAnimationFrame(() => el.classList.add("is-in"));
+  });
 
-            const storedPassword = localStorage.getItem(username);
-            if (storedPassword && storedPassword === password) {
-                alert("Giriş başarılı!");
-                window.location.href = "index.html";
-            } else {
-                alert("Kullanıcı adı veya şifre hatalı.");
-            }
-        });
-    }
+  if (form && status) {
+    form.addEventListener("submit", (event) => {
+      event.preventDefault();
+      const data = new FormData(form);
+      const name = String(data.get("name") || "").trim();
+      const email = String(data.get("email") || "").trim();
+      const message = String(data.get("message") || "").trim();
+
+      if (!name || !email || !message) {
+        status.textContent = "Lütfen tüm alanları doldurun.";
+        return;
+      }
+
+      const subject = encodeURIComponent(`Portföy iletişimi — ${name}`);
+      const body = encodeURIComponent(
+        `Ad: ${name}\nE-posta: ${email}\n\n${message}`
+      );
+
+      status.textContent = "E-posta istemciniz açılıyor…";
+      window.location.href = `mailto:faruktazeoglu9@gmail.com?subject=${subject}&body=${body}`;
+      form.reset();
+    });
+  }
 });
