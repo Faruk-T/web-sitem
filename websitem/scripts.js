@@ -83,8 +83,67 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   if (form && status) {
-    form.addEventListener("submit", () => {
+    const CONTACT_EMAIL = "faruktazeoglu9@gmail.com";
+    const isHosted =
+      location.protocol === "http:" || location.protocol === "https:";
+
+    form.addEventListener("submit", async (event) => {
+      event.preventDefault();
+
+      const data = new FormData(form);
+      const name = String(data.get("name") || "").trim();
+      const email = String(data.get("email") || "").trim();
+      const message = String(data.get("message") || "").trim();
+
+      if (!name || !email || !message) {
+        status.textContent = "Lütfen tüm alanları doldurun.";
+        return;
+      }
+
+      const payload = {
+        name,
+        email,
+        message,
+        _subject: `Portföy iletişimi — ${name}`,
+      };
+
       status.textContent = "Gönderiliyor…";
+
+      if (isHosted) {
+        try {
+          const response = await fetch(
+            `https://formsubmit.co/ajax/${CONTACT_EMAIL}`,
+            {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+                Accept: "application/json",
+              },
+              body: JSON.stringify(payload),
+            }
+          );
+
+          if (!response.ok) throw new Error("submit failed");
+
+          status.textContent = "Mesajınız gönderildi. Teşekkürler.";
+          form.reset();
+          return;
+        } catch {
+          status.textContent =
+            "Gönderim başarısız. Mail adresini kopyalayıp doğrudan yazabilirsiniz.";
+          return;
+        }
+      }
+
+      const draft = `Kime: ${CONTACT_EMAIL}\nAd: ${name}\nE-posta: ${email}\n\n${message}`;
+      try {
+        await navigator.clipboard.writeText(draft);
+        status.textContent =
+          "Lokal önizleme: mesaj panoya kopyalandı. Canlı sitede doğrudan mailinize gider.";
+      } catch {
+        status.textContent = `Lokal önizleme — şu adrese yazın: ${CONTACT_EMAIL}`;
+      }
+      form.reset();
     });
   }
 });
